@@ -11,14 +11,19 @@ export default class App extends Component {
     ],
   };
   deleteTodo = (id) => {
-    console.log(id);
+    this.setState(({ todoData }) => {
+      const index = this.state.todoData.findIndex((i) => i.id === id);
+      return {
+        todoData: [...todoData.slice(0, index), ...todoData.slice(index + 1)],
+      };
+    });
   };
   render() {
     return (
       <section className="todoapp">
         <Header />
         <section className="main">
-          <TodoList todoData={this.state.todoData} />
+          <TodoList todoData={this.state.todoData} onDelete={this.deleteTodo} />
           <Footer />
         </section>
       </section>

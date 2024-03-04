@@ -12,7 +12,7 @@ export default class TodoItem extends Component {
     });
   };
   render() {
-    const { description } = this.props;
+    const { description, onDelete } = this.props;
     let classNames = "";
     if (this.state.done) {
       classNames = "completed";
@@ -29,7 +29,7 @@ export default class TodoItem extends Component {
             <span className="created">created 5 minutes ago</span>
           </label>
           <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy"></button>
+          <button className="icon icon-destroy" onClick={onDelete}></button>
         </div>
       </li>
     );
