@@ -63,7 +63,6 @@ export default class App extends Component {
         todoData: [...todoData.slice(0), this.createTodo(description)],
       };
     });
-    this.filter();
   };
   filter = (type = "All") => {};
   onFiltered = (e) => {
