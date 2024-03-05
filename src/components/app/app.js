@@ -63,35 +63,9 @@ export default class App extends Component {
         todoData: [...todoData.slice(0), this.createTodo(description)],
       };
     });
+    this.filter();
   };
-  filter = (type) => {
-    if (type === "Completed") {
-      this.setState(({ filteredData, todoData }) => {
-        const newArr = JSON.parse(JSON.stringify(todoData)).filter(
-          (el) => el.isDone
-        );
-        return {
-          filteredData: newArr,
-        };
-      });
-    } else if (type === "Active") {
-      this.setState(({ filteredData, todoData }) => {
-        const newArr = JSON.parse(JSON.stringify(todoData)).filter(
-          (el) => !el.isDone
-        );
-        return {
-          filteredData: newArr,
-        };
-      });
-    } else {
-      this.setState(({ filteredData, todoData }) => {
-        const newArr = JSON.parse(JSON.stringify(todoData));
-        return {
-          filteredData: newArr,
-        };
-      });
-    }
-  };
+  filter = (type = "All") => {};
   onFiltered = (e) => {
     if (e.target.closest("button")) {
       e.currentTarget
@@ -100,15 +74,12 @@ export default class App extends Component {
       switch (e.target.textContent) {
         case "Completed":
           e.target.classList.add("selected");
-          this.filter("Completed");
           break;
         case "Active":
           e.target.classList.add("selected");
-          this.filter("Active");
           break;
         case "All":
           e.target.classList.add("selected");
-          this.filter("All");
           break;
         default:
           break;
@@ -124,7 +95,6 @@ export default class App extends Component {
             todoData={this.state.todoData}
             onDelete={this.deleteTodo}
             doneHandler={this.doneHandler}
-            filteredData={this.state.filteredData}
           />
           <Footer
             onFiltered={this.onFiltered}

@@ -1,9 +1,9 @@
 import React from "react";
 import TodoItem from "../todo-item";
-const TodoList = ({ todoData, filteredData, onDelete, doneHandler }) => {
+const TodoList = ({ todoData, onDelete, doneHandler }) => {
   return (
     <ul className="todo-list">
-      {filteredData.map((i) => {
+      {todoData.map((i) => {
         return (
           <TodoItem
             key={i.id}
