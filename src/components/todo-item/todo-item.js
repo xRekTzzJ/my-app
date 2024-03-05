@@ -1,6 +1,17 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 export default class TodoItem extends Component {
+  static propTypes = {
+    description: PropTypes.string.isRequired,
+    isDone: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func,
+    doneHandler: PropTypes.func,
+  };
+  static defaultProps = {
+    onDelete: () => {},
+    doneHandler: () => {},
+  };
+
   render() {
     const { description, isDone, onDelete, doneHandler } = this.props;
     let classNames = "";

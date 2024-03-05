@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 export default class Filters extends Component {
+  static propTypes = {
+    filter: PropTypes.string.isRequired,
+    onFilterClick: PropTypes.func,
+  };
+  static defaultProps = {
+    onFilterClick: () => {},
+  };
   render() {
     const { filter, onFilterClick } = this.props;
     return (
