@@ -3,12 +3,36 @@ import Header from "../header";
 import Footer from "../footer";
 import TodoList from "../todo-list";
 export default class App extends Component {
+  maxId = 0;
+  createTodo = (description, isDone = false) => {
+    return {
+      description,
+      isDone,
+      id: (this.maxId += 1),
+    };
+  };
   state = {
     todoData: [
-      { description: "drink coffee", id: 1 },
-      { description: "watch youtube", id: 2 },
-      { description: "smoking", id: 3 },
+      this.createTodo("Drink Coffee"),
+      this.createTodo("Watch youtube"),
+      this.createTodo("Smoking", true),
+      this.createTodo("Buy a bread", true),
+      this.createTodo("Clean room", true),
     ],
+    filteredData: [],
+  };
+  doneHandler = (id) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((i) => i.id === id);
+      const oldElement = todoData[index];
+      return {
+        todoData: [
+          ...todoData.slice(0, index),
+          { ...oldElement, isDone: !oldElement.isDone },
+          ...todoData.slice(index + 1),
+        ],
+      };
+    });
   };
   deleteTodo = (id) => {
     this.setState(({ todoData }) => {
@@ -18,13 +42,95 @@ export default class App extends Component {
       };
     });
   };
+  clearCompleted = () => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: todoData.filter((el) => !el.isDone),
+      };
+    });
+  };
+  doneCounter = () => {
+    return (
+      this.state.todoData.length -
+      this.state.todoData.filter((e) => {
+        return e.isDone;
+      }).length
+    );
+  };
+  onCreateElement = (description) => {
+    this.setState(({ todoData }) => {
+      return {
+        todoData: [...todoData.slice(0), this.createTodo(description)],
+      };
+    });
+  };
+  filter = (type) => {
+    if (type === "Completed") {
+      this.setState(({ filteredData, todoData }) => {
+        const newArr = JSON.parse(JSON.stringify(todoData)).filter(
+          (el) => el.isDone
+        );
+        return {
+          filteredData: newArr,
+        };
+      });
+    } else if (type === "Active") {
+      this.setState(({ filteredData, todoData }) => {
+        const newArr = JSON.parse(JSON.stringify(todoData)).filter(
+          (el) => !el.isDone
+        );
+        return {
+          filteredData: newArr,
+        };
+      });
+    } else {
+      this.setState(({ filteredData, todoData }) => {
+        const newArr = JSON.parse(JSON.stringify(todoData));
+        return {
+          filteredData: newArr,
+        };
+      });
+    }
+  };
+  onFiltered = (e) => {
+    if (e.target.closest("button")) {
+      e.currentTarget
+        .querySelectorAll("button")
+        .forEach((i) => i.classList.remove("selected"));
+      switch (e.target.textContent) {
+        case "Completed":
+          e.target.classList.add("selected");
+          this.filter("Completed");
+          break;
+        case "Active":
+          e.target.classList.add("selected");
+          this.filter("Active");
+          break;
+        case "All":
+          e.target.classList.add("selected");
+          this.filter("All");
+          break;
+        default:
+          break;
+      }
+    }
+  };
   render() {
     return (
       <section className="todoapp">
-        <Header />
+        <Header onCreateElement={this.onCreateElement} />
         <section className="main">
-          <TodoList todoData={this.state.todoData} onDelete={this.deleteTodo} />
-          <Footer />
+          <TodoList
+            todoData={this.state.todoData}
+            onDelete={this.deleteTodo}
+            doneHandler={this.doneHandler}
+            filteredData={this.state.filteredData}
+          />
+          <Footer
+            onFiltered={this.onFiltered}
+            doneCounter={this.doneCounter()}
+            onClearCompleted={this.clearCompleted}
+          />
         </section>
       </section>
     );

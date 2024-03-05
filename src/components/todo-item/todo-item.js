@@ -1,31 +1,24 @@
 import React, { Component } from "react";
 
 export default class TodoItem extends Component {
-  state = {
-    done: false,
-  };
-  onClickElement = () => {
-    this.setState((state) => {
-      return {
-        done: !state.done,
-      };
-    });
-  };
   render() {
-    const { description, onDelete } = this.props;
+    const { description, isDone, onDelete, doneHandler } = this.props;
     let classNames = "";
-    if (this.state.done) {
+    if (isDone) {
       classNames = "completed";
     }
 
     return (
       <li className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox" readOnly />
+          <input
+            className="toggle"
+            type="checkbox"
+            defaultChecked={isDone === true ? true : false}
+            onClick={doneHandler}
+          />
           <label>
-            <span className="description" onClick={this.onClickElement}>
-              {description}
-            </span>
+            <span className="description">{description}</span>
             <span className="created">created 5 minutes ago</span>
           </label>
           <button className="icon icon-edit"></button>

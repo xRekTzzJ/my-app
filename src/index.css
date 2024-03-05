@@ -230,7 +230,6 @@ body {
   transition: color 0.4s;
   font-weight: 400;
   color: #4d4d4d;
-  cursor: pointer;
 }
 
 .todo-list li.completed label .description {
