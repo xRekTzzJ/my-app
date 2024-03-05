@@ -8,6 +8,7 @@ export default class App extends Component {
     return {
       description,
       isDone,
+      created: new Date(),
       id: (this.maxId += 1),
     };
   };

@@ -10,19 +10,21 @@ export default class TodoList extends Component {
   static defaultProps = {
     onDelete: () => {},
     doneHandler: () => {},
+    created: new Date(),
   };
   render() {
     const { todoData, onDelete, doneHandler } = this.props;
     return (
       <ul className="todo-list">
         {todoData.map((i) => {
-          const { id, description, isDone } = i;
+          const { id, description, isDone, created } = i;
           return (
             <TodoItem
               key={id}
               description={description}
               onDelete={() => onDelete(id)}
               isDone={isDone}
+              created={created}
               doneHandler={() => doneHandler(id)}
             />
           );
