@@ -19,7 +19,7 @@ export default class App extends Component {
       this.createTodo("Buy a bread", true),
       this.createTodo("Clean room", true),
     ],
-    filteredData: [],
+    filter: "All",
   };
   doneHandler = (id) => {
     this.setState(({ todoData }) => {
@@ -64,7 +64,18 @@ export default class App extends Component {
       };
     });
   };
-  filter = (type = "All") => {};
+  filter = () => {
+    switch (this.state.filter) {
+      case "Active":
+        return this.state.todoData.filter((el) => !el.isDone);
+      case "Completed":
+        return this.state.todoData.filter((el) => el.isDone);
+      case "All":
+        return this.state.todoData;
+      default:
+        break;
+    }
+  };
   onFiltered = (e) => {
     if (e.target.closest("button")) {
       e.currentTarget
@@ -73,12 +84,21 @@ export default class App extends Component {
       switch (e.target.textContent) {
         case "Completed":
           e.target.classList.add("selected");
+          this.setState({
+            filter: "Completed",
+          });
           break;
         case "Active":
           e.target.classList.add("selected");
+          this.setState({
+            filter: "Active",
+          });
           break;
         case "All":
           e.target.classList.add("selected");
+          this.setState({
+            filter: "All",
+          });
           break;
         default:
           break;
@@ -91,7 +111,7 @@ export default class App extends Component {
         <Header onCreateElement={this.onCreateElement} />
         <section className="main">
           <TodoList
-            todoData={this.state.todoData}
+            todoData={this.filter()}
             onDelete={this.deleteTodo}
             doneHandler={this.doneHandler}
           />
