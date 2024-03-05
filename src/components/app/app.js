@@ -30,7 +30,7 @@ export default class App extends Component {
   };
   deleteTodo = (id) => {
     this.setState(({ todoData }) => {
-      const index = this.state.todoData.findIndex((i) => i.id === id);
+      const index = todoData.findIndex((i) => i.id === id);
       return {
         todoData: [...todoData.slice(0, index), ...todoData.slice(index + 1)],
       };
