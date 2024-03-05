@@ -12,13 +12,7 @@ export default class App extends Component {
     };
   };
   state = {
-    todoData: [
-      this.createTodo("Drink Coffee"),
-      this.createTodo("Watch youtube"),
-      this.createTodo("Smoking", true),
-      this.createTodo("Buy a bread", true),
-      this.createTodo("Clean room", true),
-    ],
+    todoData: [],
     filter: "All",
   };
   doneHandler = (id) => {
@@ -50,9 +44,10 @@ export default class App extends Component {
     });
   };
   doneCounter = () => {
+    const { todoData } = this.state;
     return (
-      this.state.todoData.length -
-      this.state.todoData.filter((e) => {
+      todoData.length -
+      todoData.filter((e) => {
         return e.isDone;
       }).length
     );
@@ -64,61 +59,56 @@ export default class App extends Component {
       };
     });
   };
-  filter = () => {
-    switch (this.state.filter) {
+  filterTodo = () => {
+    const { filter, todoData } = this.state;
+    switch (filter) {
       case "Active":
-        return this.state.todoData.filter((el) => !el.isDone);
+        return todoData.filter((el) => !el.isDone);
       case "Completed":
-        return this.state.todoData.filter((el) => el.isDone);
+        return todoData.filter((el) => el.isDone);
       case "All":
-        return this.state.todoData;
+        return todoData;
       default:
         break;
     }
   };
-  onFiltered = (e) => {
-    if (e.target.closest("button")) {
-      e.currentTarget
-        .querySelectorAll("button")
-        .forEach((i) => i.classList.remove("selected"));
-      switch (e.target.textContent) {
-        case "Completed":
-          e.target.classList.add("selected");
-          this.setState({
-            filter: "Completed",
-          });
-          break;
-        case "Active":
-          e.target.classList.add("selected");
-          this.setState({
-            filter: "Active",
-          });
-          break;
-        case "All":
-          e.target.classList.add("selected");
-          this.setState({
-            filter: "All",
-          });
-          break;
-        default:
-          break;
-      }
+  onFilterClick = (type) => {
+    switch (type) {
+      case "Completed":
+        this.setState({
+          filter: "Completed",
+        });
+        break;
+      case "Active":
+        this.setState({
+          filter: "Active",
+        });
+        break;
+      case "All":
+        this.setState({
+          filter: "All",
+        });
+        break;
+      default:
+        break;
     }
   };
   render() {
+    const { filter } = this.state;
     return (
       <section className="todoapp">
         <Header onCreateElement={this.onCreateElement} />
         <section className="main">
           <TodoList
-            todoData={this.filter()}
+            todoData={this.filterTodo()}
             onDelete={this.deleteTodo}
             doneHandler={this.doneHandler}
           />
           <Footer
-            onFiltered={this.onFiltered}
+            onFilterClick={this.onFilterClick}
             doneCounter={this.doneCounter()}
             onClearCompleted={this.clearCompleted}
+            filter={filter}
           />
         </section>
       </section>

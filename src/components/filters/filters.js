@@ -2,16 +2,38 @@ import React, { Component } from "react";
 
 export default class Filters extends Component {
   render() {
+    const { filter, onFilterClick } = this.props;
     return (
-      <ul className="filters" onClick={this.props.onFiltered}>
+      <ul className="filters">
         <li>
-          <button className="selected">All</button>
+          <button
+            className={filter === "All" ? "selected" : ""}
+            onClick={() => {
+              onFilterClick("All");
+            }}
+          >
+            All
+          </button>
         </li>
         <li>
-          <button>Active</button>
+          <button
+            className={filter === "Active" ? "selected" : ""}
+            onClick={() => {
+              onFilterClick("Active");
+            }}
+          >
+            Active
+          </button>
         </li>
         <li>
-          <button>Completed</button>
+          <button
+            className={filter === "Completed" ? "selected" : ""}
+            onClick={() => {
+              onFilterClick("Completed");
+            }}
+          >
+            Completed
+          </button>
         </li>
       </ul>
     );
