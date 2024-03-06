@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Header from "../header";
-import Footer from "../footer";
-import TodoList from "../todo-list";
+import React, { Component } from 'react';
+import Footer from '../footer';
+import Header from '../header';
+import TodoList from '../todo-list';
 export default class App extends Component {
   maxId = 0;
   createTodo = (description, isDone = false) => {
@@ -14,7 +14,7 @@ export default class App extends Component {
   };
   state = {
     todoData: [],
-    filter: "All",
+    filter: 'All',
   };
   doneHandler = (id) => {
     this.setState(({ todoData }) => {
@@ -63,11 +63,11 @@ export default class App extends Component {
   filterTodo = () => {
     const { filter, todoData } = this.state;
     switch (filter) {
-      case "Active":
+      case 'Active':
         return todoData.filter((el) => !el.isDone);
-      case "Completed":
+      case 'Completed':
         return todoData.filter((el) => el.isDone);
-      case "All":
+      case 'All':
         return todoData;
       default:
         break;
@@ -75,19 +75,19 @@ export default class App extends Component {
   };
   onFilterClick = (type) => {
     switch (type) {
-      case "Completed":
+      case 'Completed':
         this.setState({
-          filter: "Completed",
+          filter: 'Completed',
         });
         break;
-      case "Active":
+      case 'Active':
         this.setState({
-          filter: "Active",
+          filter: 'Active',
         });
         break;
-      case "All":
+      case 'All':
         this.setState({
-          filter: "All",
+          filter: 'All',
         });
         break;
       default:
@@ -99,11 +99,7 @@ export default class App extends Component {
       const index = todoData.findIndex((i) => i.id === id);
       const oldElement = todoData[index];
       return {
-        todoData: [
-          ...todoData.slice(0, index),
-          { ...oldElement, description },
-          ...todoData.slice(index + 1),
-        ],
+        todoData: [...todoData.slice(0, index), { ...oldElement, description }, ...todoData.slice(index + 1)],
       };
     });
   };
