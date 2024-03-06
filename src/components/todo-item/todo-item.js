@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 export default class TodoItem extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,

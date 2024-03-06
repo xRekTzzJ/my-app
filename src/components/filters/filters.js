@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 export default class Filters extends Component {
   static propTypes = {
     filter: PropTypes.string.isRequired,

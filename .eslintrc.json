@@ -15,7 +15,7 @@
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 12,
+    "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "plugins": ["react", "prettier", "import"],
@@ -38,6 +38,7 @@
     ]
   },
   "settings": {
+    "eslint.validate": ["vue", "html", "javascript", "typescript", "javascriptreact", "typescriptreact"],
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"],
