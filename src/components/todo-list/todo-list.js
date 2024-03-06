@@ -6,14 +6,16 @@ export default class TodoList extends Component {
     todoData: PropTypes.arrayOf(PropTypes.object).isRequired,
     onDelete: PropTypes.func,
     doneHandler: PropTypes.func,
+    onEditSubmit: PropTypes.func,
   };
   static defaultProps = {
     onDelete: () => {},
     doneHandler: () => {},
+    onEditSubmit: () => {},
     created: new Date(),
   };
   render() {
-    const { todoData, onDelete, doneHandler } = this.props;
+    const { todoData, onDelete, doneHandler, onEditSubmit } = this.props;
     return (
       <ul className="todo-list">
         {todoData.map((i) => {
@@ -23,7 +25,7 @@ export default class TodoList extends Component {
               key={id}
               description={description}
               onDelete={() => onDelete(id)}
-              onEditSubmit={this.props.onEditSubmit}
+              onEditSubmit={onEditSubmit}
               isDone={isDone}
               id={id}
               created={created}

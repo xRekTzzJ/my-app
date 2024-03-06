@@ -101,7 +101,7 @@ export default class App extends Component {
       return {
         todoData: [
           ...todoData.slice(0, index),
-          { ...oldElement, description: description },
+          { ...oldElement, description },
           ...todoData.slice(index + 1),
         ],
       };

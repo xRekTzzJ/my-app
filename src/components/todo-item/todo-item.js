@@ -5,12 +5,15 @@ export default class TodoItem extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
     isDone: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired,
     onDelete: PropTypes.func,
     doneHandler: PropTypes.func,
+    onEditSubmit: PropTypes.func,
   };
   static defaultProps = {
     onDelete: () => {},
     doneHandler: () => {},
+    onEditSubmit: () => {},
     created: new Date(),
   };
   state = {
@@ -33,8 +36,10 @@ export default class TodoItem extends Component {
   };
 
   submitHandler = (e) => {
+    const { onEditSubmit, id } = this.props;
+    const { description } = this.state;
     e.preventDefault();
-    this.props.onEditSubmit(this.state.description, this.props.id);
+    onEditSubmit(description, id);
     this.setState({
       edit: false,
     });
@@ -42,7 +47,7 @@ export default class TodoItem extends Component {
 
   render() {
     const { description, isDone, onDelete, doneHandler, created } = this.props;
-    const { edit } = this.state;
+    const { edit, description: stateDescription } = this.state;
     let classNames = "";
     if (isDone) {
       classNames = "completed";
@@ -78,7 +83,7 @@ export default class TodoItem extends Component {
             type="text"
             className="edit"
             onChange={this.inputHandler}
-            value={this.state.description}
+            value={stateDescription}
           />
         </form>
       </li>
