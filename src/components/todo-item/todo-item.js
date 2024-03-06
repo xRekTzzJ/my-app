@@ -61,12 +61,7 @@ export default class TodoItem extends Component {
     return (
       <li className={classNames}>
         <div className="view">
-          <input
-            className="toggle"
-            type="checkbox"
-            defaultChecked={isDone === true ? true : false}
-            onClick={doneHandler}
-          />
+          <input className="toggle" type="checkbox" defaultChecked={isDone ? true : false} onClick={doneHandler} />
           <label>
             <span className="description">{description}</span>
             <span className="created">{`created ${formatDistanceToNow(created, {

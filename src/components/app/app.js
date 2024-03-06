@@ -48,12 +48,7 @@ export default class App extends Component {
   };
   doneCounter = () => {
     const { todoData } = this.state;
-    return (
-      todoData.length -
-      todoData.filter((e) => {
-        return e.isDone;
-      }).length
-    );
+    return todoData.length - todoData.filter((e) => e.isDone).length;
   };
   onCreateElement = (description) => {
     this.setState(({ todoData }) => {
@@ -71,8 +66,6 @@ export default class App extends Component {
         return todoData.filter((el) => el.isDone);
       case 'All':
         return todoData;
-      default:
-        break;
     }
   };
   onFilterClick = (type) => {
@@ -99,9 +92,8 @@ export default class App extends Component {
   onEditSubmit = (description, id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
-      const oldElement = todoData[index];
       return {
-        todoData: [...todoData.slice(0, index), { ...oldElement, description }, ...todoData.slice(index + 1)],
+        todoData: [...todoData.slice(0, index), { ...todoData[index], description }, ...todoData.slice(index + 1)],
       };
     });
   };
