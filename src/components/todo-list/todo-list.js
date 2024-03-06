@@ -23,7 +23,9 @@ export default class TodoList extends Component {
               key={id}
               description={description}
               onDelete={() => onDelete(id)}
+              onEditSubmit={this.props.onEditSubmit}
               isDone={isDone}
+              id={id}
               created={created}
               doneHandler={() => doneHandler(id)}
             />

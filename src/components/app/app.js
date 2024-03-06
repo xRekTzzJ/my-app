@@ -94,6 +94,19 @@ export default class App extends Component {
         break;
     }
   };
+  onEditSubmit = (description, id) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((i) => i.id === id);
+      const oldElement = todoData[index];
+      return {
+        todoData: [
+          ...todoData.slice(0, index),
+          { ...oldElement, description: description },
+          ...todoData.slice(index + 1),
+        ],
+      };
+    });
+  };
   render() {
     const { filter } = this.state;
     return (
@@ -104,6 +117,7 @@ export default class App extends Component {
             todoData={this.filterTodo()}
             onDelete={this.deleteTodo}
             doneHandler={this.doneHandler}
+            onEditSubmit={this.onEditSubmit}
           />
           <Footer
             onFilterClick={this.onFilterClick}

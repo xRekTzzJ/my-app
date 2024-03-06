@@ -13,12 +13,42 @@ export default class TodoItem extends Component {
     doneHandler: () => {},
     created: new Date(),
   };
+  state = {
+    edit: false,
+    description: this.props.description,
+  };
+
+  onEditClick = () => {
+    this.setState(({ edit }) => {
+      return {
+        edit: !edit,
+      };
+    });
+  };
+
+  inputHandler = (e) => {
+    this.setState({
+      description: e.target.value,
+    });
+  };
+
+  submitHandler = (e) => {
+    e.preventDefault();
+    this.props.onEditSubmit(this.state.description, this.props.id);
+    this.setState({
+      edit: false,
+    });
+  };
 
   render() {
     const { description, isDone, onDelete, doneHandler, created } = this.props;
+    const { edit } = this.state;
     let classNames = "";
     if (isDone) {
       classNames = "completed";
+    }
+    if (edit) {
+      classNames = "editing";
     }
 
     return (
@@ -37,9 +67,20 @@ export default class TodoItem extends Component {
               addSuffix: true,
             })}`}</span>
           </label>
-          <button className="icon icon-edit"></button>
+          <button
+            className="icon icon-edit"
+            onClick={!isDone ? this.onEditClick : () => {}}
+          ></button>
           <button className="icon icon-destroy" onClick={onDelete}></button>
         </div>
+        <form onSubmit={this.submitHandler}>
+          <input
+            type="text"
+            className="edit"
+            onChange={this.inputHandler}
+            value={this.state.description}
+          />
+        </form>
       </li>
     );
   }
