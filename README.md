@@ -13,4 +13,4 @@
 
 1. -
 
-[Ссылка на gh-pages](https://xrektzzj.github.io/webpack-static-template/)
+[Ссылка на vercel](https://my-app-chi-ruby.vercel.app/)
