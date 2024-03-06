@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import TodoItem from "../todo-item";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import TodoItem from '../todo-item';
+import PropTypes from 'prop-types';
 export default class TodoList extends Component {
   static propTypes = {
     todoData: PropTypes.arrayOf(PropTypes.object).isRequired,

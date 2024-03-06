@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { formatDistanceToNow } from "date-fns";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { formatDistanceToNow } from 'date-fns';
 export default class TodoItem extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
@@ -50,12 +50,12 @@ export default class TodoItem extends Component {
   render() {
     const { description, isDone, onDelete, doneHandler, created } = this.props;
     const { edit, description: stateDescription } = this.state;
-    let classNames = "";
+    let classNames = '';
     if (isDone) {
-      classNames = "completed";
+      classNames = 'completed';
     }
     if (edit) {
-      classNames = "editing";
+      classNames = 'editing';
     }
 
     return (
@@ -74,10 +74,7 @@ export default class TodoItem extends Component {
               addSuffix: true,
             })}`}</span>
           </label>
-          <button
-            className="icon icon-edit"
-            onClick={!isDone ? this.onEditClick : () => {}}
-          ></button>
+          <button className="icon icon-edit" onClick={!isDone ? this.onEditClick : () => {}}></button>
           <button className="icon icon-destroy" onClick={onDelete}></button>
         </div>
         <form onSubmit={this.submitHandler}>

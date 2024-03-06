@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 export default class NewTaskForm extends Component {
   static propTypes = {
     onCreateElement: PropTypes.func,
@@ -9,7 +9,7 @@ export default class NewTaskForm extends Component {
   };
 
   state = {
-    description: "",
+    description: '',
   };
 
   submitHandler = (e) => {
@@ -19,7 +19,7 @@ export default class NewTaskForm extends Component {
     if (description.length !== 0) {
       onCreateElement(description);
       this.setState({
-        description: "",
+        description: '',
       });
     }
   };

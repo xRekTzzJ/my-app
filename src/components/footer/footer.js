@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Filters from "../filters";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import Filters from '../filters';
+import PropTypes from 'prop-types';
 export default class Footer extends Component {
   static propTypes = {
     doneCounter: PropTypes.number.isRequired,

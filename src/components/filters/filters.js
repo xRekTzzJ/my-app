@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 export default class Filters extends Component {
   static propTypes = {
     filter: PropTypes.string.isRequired,
@@ -14,9 +14,9 @@ export default class Filters extends Component {
       <ul className="filters">
         <li>
           <button
-            className={filter === "All" ? "selected" : ""}
+            className={filter === 'All' ? 'selected' : ''}
             onClick={() => {
-              onFilterClick("All");
+              onFilterClick('All');
             }}
           >
             All
@@ -24,9 +24,9 @@ export default class Filters extends Component {
         </li>
         <li>
           <button
-            className={filter === "Active" ? "selected" : ""}
+            className={filter === 'Active' ? 'selected' : ''}
             onClick={() => {
-              onFilterClick("Active");
+              onFilterClick('Active');
             }}
           >
             Active
@@ -34,9 +34,9 @@ export default class Filters extends Component {
         </li>
         <li>
           <button
-            className={filter === "Completed" ? "selected" : ""}
+            className={filter === 'Completed' ? 'selected' : ''}
             onClick={() => {
-              onFilterClick("Completed");
+              onFilterClick('Completed');
             }}
           >
             Completed

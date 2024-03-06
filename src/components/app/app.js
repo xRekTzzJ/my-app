@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+
 import Footer from '../footer';
 import Header from '../header';
 import TodoList from '../todo-list';
+
 export default class App extends Component {
   maxId = 0;
   createTodo = (description, isDone = false) => {
