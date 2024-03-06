@@ -39,10 +39,12 @@ export default class TodoItem extends Component {
     const { onEditSubmit, id } = this.props;
     const { description } = this.state;
     e.preventDefault();
-    onEditSubmit(description, id);
-    this.setState({
-      edit: false,
-    });
+    if (description.length !== 0) {
+      onEditSubmit(description, id);
+      this.setState({
+        edit: false,
+      });
+    }
   };
 
   render() {
@@ -84,6 +86,7 @@ export default class TodoItem extends Component {
             className="edit"
             onChange={this.inputHandler}
             value={stateDescription}
+            placeholder="Write a todo"
           />
         </form>
       </li>
