@@ -7,13 +7,23 @@ import TodoList from '../todo-list';
 export default class App extends Component {
   maxId = 0;
   createTodo = (description, isDone = false, minutes, seconds) => {
-    const validateMinutes = minutes.length > 0 ? Number(minutes) : 0;
-    const validateSeconds = seconds.length > 0 ? Number(seconds) : 0;
+    const validate = (value) => {
+      if (value.length < 1) {
+        return 0;
+      }
+      if (value < 0) {
+        return 0;
+      }
+      if (value > 59) {
+        return 59;
+      }
+      return Number(value);
+    };
     return {
       description,
       isDone,
-      minutes: validateMinutes,
-      seconds: validateSeconds,
+      minutes: validate(minutes),
+      seconds: validate(seconds),
       created: new Date(),
       id: (this.maxId += 1),
     };
@@ -21,6 +31,9 @@ export default class App extends Component {
   state = {
     todoData: [],
     filter: 'All',
+  };
+  updateTimer = (id) => {
+    console.log(id);
   };
   doneHandler = (id) => {
     this.setState(({ todoData }) => {
@@ -112,6 +125,7 @@ export default class App extends Component {
             onDelete={this.deleteTodo}
             doneHandler={this.doneHandler}
             onEditSubmit={this.onEditSubmit}
+            updateTimer={this.updateTimer}
           />
           <Footer
             onFilterClick={this.onFilterClick}

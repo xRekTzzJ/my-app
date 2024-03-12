@@ -2,6 +2,10 @@ import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 export default class TodoItem extends Component {
+  componentDidMount() {
+    const { id } = this.props;
+    this.props.updateTimer(id);
+  }
   static propTypes = {
     description: PropTypes.string.isRequired,
     isDone: PropTypes.bool.isRequired,
@@ -46,7 +50,7 @@ export default class TodoItem extends Component {
       });
     }
   };
-
+  updateTimer = this.props.updateTimer;
   renderTimer = (minutes, seconds) => {
     const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
     const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
