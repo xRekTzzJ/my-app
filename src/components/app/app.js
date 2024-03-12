@@ -6,10 +6,14 @@ import TodoList from '../todo-list';
 
 export default class App extends Component {
   maxId = 0;
-  createTodo = (description, isDone = false) => {
+  createTodo = (description, isDone = false, minutes, seconds) => {
+    const validateMinutes = minutes.length > 0 ? Number(minutes) : 0;
+    const validateSeconds = seconds.length > 0 ? Number(seconds) : 0;
     return {
       description,
       isDone,
+      minutes: validateMinutes,
+      seconds: validateSeconds,
       created: new Date(),
       id: (this.maxId += 1),
     };
@@ -50,10 +54,10 @@ export default class App extends Component {
     const { todoData } = this.state;
     return todoData.length - todoData.filter((e) => e.isDone).length;
   };
-  onCreateElement = (description) => {
+  onCreateElement = (description, minutes, seconds) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: [...todoData.slice(0), this.createTodo(description)],
+        todoData: [...todoData.slice(0), this.createTodo(description, false, minutes, seconds)],
       };
     });
   };

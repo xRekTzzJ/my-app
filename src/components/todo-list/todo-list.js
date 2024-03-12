@@ -20,7 +20,7 @@ export default class TodoList extends Component {
     return (
       <ul className="todo-list">
         {todoData.map((i) => {
-          const { id, description, isDone, created } = i;
+          const { id, description, isDone, created, minutes, seconds } = i;
           return (
             <TodoItem
               key={id}
@@ -28,6 +28,8 @@ export default class TodoList extends Component {
               onDelete={() => onDelete(id)}
               onEditSubmit={onEditSubmit}
               isDone={isDone}
+              minutes={minutes}
+              seconds={seconds}
               id={id}
               created={created}
               doneHandler={() => doneHandler(id)}

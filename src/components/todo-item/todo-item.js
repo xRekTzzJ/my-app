@@ -47,8 +47,20 @@ export default class TodoItem extends Component {
     }
   };
 
+  renderTimer = (minutes, seconds) => {
+    const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
+    const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
+    return (
+      <span className="description">
+        <button className="icon icon-play"></button>
+        <button className="icon icon-pause"></button>
+        {validateMinutes}:{validateSeconds}
+      </span>
+    );
+  };
+
   render() {
-    const { description, isDone, onDelete, doneHandler, created } = this.props;
+    const { description, isDone, onDelete, doneHandler, created, minutes, seconds } = this.props;
     const { edit, description: stateDescription } = this.state;
     let classNames = '';
     if (isDone) {
@@ -63,8 +75,9 @@ export default class TodoItem extends Component {
         <div className="view">
           <input className="toggle" type="checkbox" defaultChecked={isDone ? true : false} onClick={doneHandler} />
           <label>
-            <span className="description">{description}</span>
-            <span className="created">{`created ${formatDistanceToNow(created, {
+            <span className="title">{description}</span>
+            {this.renderTimer(minutes, seconds)}
+            <span className="description description_date">{`created ${formatDistanceToNow(created, {
               includeSeconds: true,
               addSuffix: true,
             })}`}</span>

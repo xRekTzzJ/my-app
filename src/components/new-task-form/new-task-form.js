@@ -10,37 +10,66 @@ export default class NewTaskForm extends Component {
 
   state = {
     description: '',
+    minutes: '',
+    seconds: '',
   };
 
   submitHandler = (e) => {
-    const { description } = this.state;
+    const { description, minutes, seconds } = this.state;
     const { onCreateElement } = this.props;
     e.preventDefault();
     if (description.length !== 0) {
-      onCreateElement(description);
+      onCreateElement(description, minutes, seconds);
       this.setState({
         description: '',
+        seconds: '',
+        minutes: '',
       });
     }
   };
 
   inputHandler = (e) => {
-    this.setState({
-      description: e.target.value,
-    });
+    switch (e.target.placeholder) {
+      case 'Task':
+        this.setState({
+          description: e.target.value,
+        });
+        break;
+      case 'Min':
+        this.setState({
+          minutes: e.target.value,
+        });
+        break;
+      case 'Sec':
+        this.setState({
+          seconds: e.target.value,
+        });
+        break;
+    }
   };
 
   render() {
-    const { description } = this.state;
+    const { description, seconds, minutes } = this.state;
     return (
-      <form onSubmit={this.submitHandler}>
+      <form className="new-todo-form" onSubmit={this.submitHandler}>
+        <input className="new-todo" placeholder="Task" autoFocus onChange={this.inputHandler} value={description} />
         <input
-          className="new-todo"
-          placeholder="What needs to be done?"
+          className="new-todo-form__timer"
+          placeholder="Min"
           autoFocus
+          type="number"
+          value={minutes}
           onChange={this.inputHandler}
-          value={description}
         />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          autoFocus
+          type="number"
+          value={seconds}
+          onChange={this.inputHandler}
+        />
+        <button type="submit"></button>
       </form>
     );
   }
