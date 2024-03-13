@@ -2,10 +2,6 @@ import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 export default class TodoItem extends Component {
-  componentDidMount() {
-    const { id } = this.props;
-    this.props.updateTimer(id);
-  }
   static propTypes = {
     description: PropTypes.string.isRequired,
     isDone: PropTypes.bool.isRequired,
@@ -50,19 +46,25 @@ export default class TodoItem extends Component {
       });
     }
   };
-  updateTimer = this.props.updateTimer;
   renderTimer = (minutes, seconds) => {
     const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
     const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
     return (
       <span className="description">
-        <button className="icon icon-play"></button>
-        <button className="icon icon-pause"></button>
+        <button className="icon icon-play" onClick={this.startTimer}></button>
+        <button className="icon icon-pause" onClick={this.pauseTimer}></button>
         {validateMinutes}:{validateSeconds}
       </span>
     );
   };
-
+  startTimer = () => {
+    const { id } = this.props;
+    this.props.startTimer(id);
+  };
+  pauseTimer = () => {
+    const { id } = this.props;
+    this.props.pauseTimer(id);
+  };
   render() {
     const { description, isDone, onDelete, doneHandler, created, minutes, seconds } = this.props;
     const { edit, description: stateDescription } = this.state;

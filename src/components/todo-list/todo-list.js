@@ -16,14 +16,14 @@ export default class TodoList extends Component {
     created: new Date(),
   };
   render() {
-    const { todoData, onDelete, doneHandler, onEditSubmit, updateTimer } = this.props;
+    const { todoData, onDelete, doneHandler, onEditSubmit, startTimer, pauseTimer } = this.props;
     return (
       <ul className="todo-list">
         {todoData.map((i) => {
           const { id, description, isDone, created, minutes, seconds } = i;
           return (
             <TodoItem
-              updateTimer={updateTimer}
+              startTimer={startTimer}
               key={id}
               description={description}
               onDelete={() => onDelete(id)}
@@ -33,6 +33,7 @@ export default class TodoList extends Component {
               seconds={seconds}
               id={id}
               created={created}
+              pauseTimer={pauseTimer}
               doneHandler={() => doneHandler(id)}
             />
           );

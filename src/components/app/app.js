@@ -25,6 +25,7 @@ export default class App extends Component {
       minutes: validate(minutes),
       seconds: validate(seconds),
       created: new Date(),
+      timer: null,
       id: (this.maxId += 1),
     };
   };
@@ -32,8 +33,44 @@ export default class App extends Component {
     todoData: [],
     filter: 'All',
   };
-  updateTimer = (id) => {
-    console.log(id);
+  startTimer = (id) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((i) => i.id === id);
+      const oldElement = todoData[index];
+      return {
+        todoData: [
+          ...todoData.slice(0, index),
+          { ...oldElement, timer: oldElement.timer ? oldElement.timer : setInterval(() => this.timer(id), 1000) },
+          ...todoData.slice(index + 1),
+        ],
+      };
+    });
+  };
+  pauseTimer = (id) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((i) => i.id === id);
+      const oldElement = todoData[index];
+      return {
+        todoData: [
+          ...todoData.slice(0, index),
+          { ...oldElement, timer: clearInterval(oldElement.timer) },
+          ...todoData.slice(index + 1),
+        ],
+      };
+    });
+  };
+  timer = (id) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((i) => i.id === id);
+      const oldElement = todoData[index];
+      return {
+        todoData: [
+          ...todoData.slice(0, index),
+          { ...oldElement, seconds: oldElement.seconds - 1 },
+          ...todoData.slice(index + 1),
+        ],
+      };
+    });
   };
   doneHandler = (id) => {
     this.setState(({ todoData }) => {
@@ -49,6 +86,7 @@ export default class App extends Component {
     });
   };
   deleteTodo = (id) => {
+    this.pauseTimer(id);
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
       return {
@@ -125,7 +163,9 @@ export default class App extends Component {
             onDelete={this.deleteTodo}
             doneHandler={this.doneHandler}
             onEditSubmit={this.onEditSubmit}
-            updateTimer={this.updateTimer}
+            startTimer={this.startTimer}
+            pauseTimer={this.pauseTimer}
+            timer={this.timer}
           />
           <Footer
             onFilterClick={this.onFilterClick}
