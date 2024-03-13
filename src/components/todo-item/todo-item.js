@@ -27,6 +27,7 @@ export default class TodoItem extends Component {
     description: this.props.description,
   };
 
+  //Клик по кнопке изменения todo
   onEditClick = () => {
     this.setState(({ edit }) => {
       return {
@@ -35,12 +36,13 @@ export default class TodoItem extends Component {
     });
   };
 
+  //Слушатель инпутов
   inputHandler = (e) => {
     this.setState({
       description: e.target.value,
     });
   };
-
+  //Слушатель самбита
   submitHandler = (e) => {
     const { onEditSubmit, id } = this.props;
     const { description } = this.state;
@@ -52,6 +54,7 @@ export default class TodoItem extends Component {
       });
     }
   };
+  //Отрендерить таймер
   renderTimer = (minutes, seconds, isDone) => {
     const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
     const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
@@ -67,14 +70,20 @@ export default class TodoItem extends Component {
       </span>
     );
   };
+
+  //Запустить таймер
   startTimer = () => {
     const { id, startTimer } = this.props;
     startTimer(id);
   };
+
+  //Остановить таймер
   pauseTimer = () => {
     const { id, pauseTimer } = this.props;
     pauseTimer(id);
   };
+
+  //Рендер todo
   render() {
     const { description, isDone, onDelete, doneHandler, created, minutes, seconds } = this.props;
     const { edit, description: stateDescription } = this.state;

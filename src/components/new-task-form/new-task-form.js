@@ -14,6 +14,7 @@ export default class NewTaskForm extends Component {
     seconds: '',
   };
 
+  //Слушатель сабмита формы
   submitHandler = (e) => {
     const { description, minutes, seconds } = this.state;
     const { onCreateElement } = this.props;
@@ -28,6 +29,7 @@ export default class NewTaskForm extends Component {
     }
   };
 
+  //Слушатель инпутов
   inputHandler = (e) => {
     switch (e.target.placeholder) {
       case 'Task':
@@ -52,6 +54,7 @@ export default class NewTaskForm extends Component {
     }
   };
 
+  //Отрендерить форму
   render() {
     const { description, seconds, minutes } = this.state;
     return (

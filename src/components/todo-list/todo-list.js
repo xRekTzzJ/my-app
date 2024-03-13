@@ -23,6 +23,8 @@ export default class TodoList extends Component {
     minutes: 0,
     seconds: 0,
   };
+
+  //Рендер списка todo
   render() {
     const { todoData, onDelete, doneHandler, onEditSubmit, startTimer, pauseTimer } = this.props;
     return (

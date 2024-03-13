@@ -5,6 +5,7 @@ import Header from '../header';
 import TodoList from '../todo-list';
 
 export default class App extends Component {
+  //Создать todo
   maxId = 0;
   createTodo = (description, isDone = false, minutes, seconds) => {
     const validate = (value) => {
@@ -29,10 +30,13 @@ export default class App extends Component {
       id: (this.maxId += 1),
     };
   };
+
   state = {
     todoData: [],
     filter: 'All',
   };
+
+  //Запустить таймер
   startTimer = (id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
@@ -46,6 +50,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Остановить таймер
   pauseTimer = (id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
@@ -59,6 +65,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Логика таймера
   timer = (id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
@@ -92,6 +100,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Слушатель done
   doneHandler = (id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
@@ -105,6 +115,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Удалить todo
   deleteTodo = (id) => {
     this.pauseTimer(id);
     this.setState(({ todoData }) => {
@@ -114,6 +126,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Очистить выполненные todo
   clearCompleted = () => {
     this.setState(({ todoData }) => {
       return {
@@ -121,10 +135,14 @@ export default class App extends Component {
       };
     });
   };
+
+  //Количество выполненных todo
   doneCounter = () => {
     const { todoData } = this.state;
     return todoData.length - todoData.filter((e) => e.isDone).length;
   };
+
+  //Слушатель создания todo
   onCreateElement = (description, minutes, seconds) => {
     this.setState(({ todoData }) => {
       return {
@@ -132,6 +150,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Отфильтровать todo
   filterTodo = () => {
     const { filter, todoData } = this.state;
     switch (filter) {
@@ -143,6 +163,8 @@ export default class App extends Component {
         return todoData;
     }
   };
+
+  //Слушатель клика по фильтру
   onFilterClick = (type) => {
     switch (type) {
       case 'Completed':
@@ -164,6 +186,8 @@ export default class App extends Component {
         break;
     }
   };
+
+  //Сабмит изменения todo
   onEditSubmit = (description, id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
@@ -172,6 +196,8 @@ export default class App extends Component {
       };
     });
   };
+
+  //Рендер приложения
   render() {
     const { filter } = this.state;
     return (
@@ -185,7 +211,6 @@ export default class App extends Component {
             onEditSubmit={this.onEditSubmit}
             startTimer={this.startTimer}
             pauseTimer={this.pauseTimer}
-            timer={this.timer}
           />
           <Footer
             onFilterClick={this.onFilterClick}
