@@ -9,6 +9,8 @@ export default class Header extends Component {
   static defaultProps = {
     onCreateElement: () => {},
   };
+
+  //Рендер хедера
   render() {
     const { onCreateElement } = this.props;
     return (

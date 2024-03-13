@@ -8,6 +8,7 @@ export default class Filters extends Component {
   static defaultProps = {
     onFilterClick: () => {},
   };
+  //Рендер фильтров
   render() {
     const { filter, onFilterClick } = this.props;
     return (

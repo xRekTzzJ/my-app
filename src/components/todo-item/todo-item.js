@@ -6,14 +6,20 @@ export default class TodoItem extends Component {
     description: PropTypes.string.isRequired,
     isDone: PropTypes.bool.isRequired,
     id: PropTypes.number.isRequired,
+    minutes: PropTypes.number.isRequired,
+    seconds: PropTypes.number.isRequired,
     onDelete: PropTypes.func,
     doneHandler: PropTypes.func,
     onEditSubmit: PropTypes.func,
+    startTimer: PropTypes.func,
+    pauseTimer: PropTypes.func,
   };
   static defaultProps = {
     onDelete: () => {},
     doneHandler: () => {},
     onEditSubmit: () => {},
+    startTimer: () => {},
+    pauseTimer: () => {},
     created: new Date(),
   };
   state = {
@@ -21,6 +27,7 @@ export default class TodoItem extends Component {
     description: this.props.description,
   };
 
+  //Клик по кнопке изменения todo
   onEditClick = () => {
     this.setState(({ edit }) => {
       return {
@@ -29,12 +36,13 @@ export default class TodoItem extends Component {
     });
   };
 
+  //Слушатель инпутов
   inputHandler = (e) => {
     this.setState({
       description: e.target.value,
     });
   };
-
+  //Слушатель самбита
   submitHandler = (e) => {
     const { onEditSubmit, id } = this.props;
     const { description } = this.state;
@@ -46,10 +54,40 @@ export default class TodoItem extends Component {
       });
     }
   };
+  //Отрендерить таймер
+  renderTimer = (minutes, seconds, isDone) => {
+    const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
+    const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
+    const iconPlayClasses =
+      (minutes === 0 && seconds === 0) || isDone ? 'icon icon-play icon_disabled' : 'icon icon-play';
+    const iconPauseClasses =
+      (minutes === 0 && seconds === 0) || isDone ? 'icon icon-pause icon_disabled' : 'icon icon-pause';
+    return (
+      <span className="description">
+        <button className={iconPlayClasses} onClick={isDone ? null : this.startTimer}></button>
+        <button className={iconPauseClasses} onClick={isDone ? null : this.pauseTimer}></button>
+        {validateMinutes}:{validateSeconds}
+      </span>
+    );
+  };
 
+  //Запустить таймер
+  startTimer = () => {
+    const { id, startTimer } = this.props;
+    startTimer(id);
+  };
+
+  //Остановить таймер
+  pauseTimer = () => {
+    const { id, pauseTimer } = this.props;
+    pauseTimer(id);
+  };
+
+  //Рендер todo
   render() {
-    const { description, isDone, onDelete, doneHandler, created } = this.props;
+    const { description, isDone, onDelete, doneHandler, created, minutes, seconds } = this.props;
     const { edit, description: stateDescription } = this.state;
+    const iconEditClases = isDone ? 'icon icon-edit icon_disabled' : 'icon icon-edit';
     let classNames = '';
     if (isDone) {
       classNames = 'completed';
@@ -63,13 +101,14 @@ export default class TodoItem extends Component {
         <div className="view">
           <input className="toggle" type="checkbox" defaultChecked={isDone ? true : false} onClick={doneHandler} />
           <label>
-            <span className="description">{description}</span>
-            <span className="created">{`created ${formatDistanceToNow(created, {
+            <span className="title">{description}</span>
+            {this.renderTimer(minutes, seconds, isDone)}
+            <span className="description description_date">{`created ${formatDistanceToNow(created, {
               includeSeconds: true,
               addSuffix: true,
             })}`}</span>
           </label>
-          <button className="icon icon-edit" onClick={!isDone ? this.onEditClick : () => {}}></button>
+          <button className={iconEditClases} onClick={!isDone ? this.onEditClick : () => {}}></button>
           <button className="icon icon-destroy" onClick={onDelete}></button>
         </div>
         <form onSubmit={this.submitHandler}>

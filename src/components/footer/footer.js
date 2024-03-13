@@ -13,6 +13,8 @@ export default class Footer extends Component {
     onFilterClick: () => {},
     onClearCompleted: () => {},
   };
+
+  //Рендер футера
   render() {
     const { doneCounter, filter, onFilterClick, onClearCompleted } = this.props;
     return (
