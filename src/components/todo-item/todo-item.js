@@ -6,14 +6,20 @@ export default class TodoItem extends Component {
     description: PropTypes.string.isRequired,
     isDone: PropTypes.bool.isRequired,
     id: PropTypes.number.isRequired,
+    minutes: PropTypes.number.isRequired,
+    seconds: PropTypes.number.isRequired,
     onDelete: PropTypes.func,
     doneHandler: PropTypes.func,
     onEditSubmit: PropTypes.func,
+    startTimer: PropTypes.func,
+    pauseTimer: PropTypes.func,
   };
   static defaultProps = {
     onDelete: () => {},
     doneHandler: () => {},
     onEditSubmit: () => {},
+    startTimer: () => {},
+    pauseTimer: () => {},
     created: new Date(),
   };
   state = {
@@ -60,12 +66,12 @@ export default class TodoItem extends Component {
     );
   };
   startTimer = () => {
-    const { id } = this.props;
-    this.props.startTimer(id);
+    const { id, startTimer } = this.props;
+    startTimer(id);
   };
   pauseTimer = () => {
-    const { id } = this.props;
-    this.props.pauseTimer(id);
+    const { id, pauseTimer } = this.props;
+    pauseTimer(id);
   };
   render() {
     const { description, isDone, onDelete, doneHandler, created, minutes, seconds } = this.props;

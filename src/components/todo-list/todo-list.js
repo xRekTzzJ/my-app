@@ -5,15 +5,23 @@ import TodoItem from '../todo-item';
 export default class TodoList extends Component {
   static propTypes = {
     todoData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    minutes: PropTypes.number.isRequired,
+    seconds: PropTypes.number.isRequired,
     onDelete: PropTypes.func,
     doneHandler: PropTypes.func,
     onEditSubmit: PropTypes.func,
+    startTimer: PropTypes.func,
+    pauseTimer: PropTypes.func,
   };
   static defaultProps = {
     onDelete: () => {},
     doneHandler: () => {},
     onEditSubmit: () => {},
+    pauseTimer: () => {},
+    startTimer: () => {},
     created: new Date(),
+    minutes: 0,
+    seconds: 0,
   };
   render() {
     const { todoData, onDelete, doneHandler, onEditSubmit, startTimer, pauseTimer } = this.props;
