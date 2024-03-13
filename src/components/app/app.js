@@ -63,10 +63,17 @@ export default class App extends Component {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
       const oldElement = todoData[index];
+      if ((oldElement.minutes === 0) & (oldElement.seconds === 0)) return;
       return {
         todoData: [
           ...todoData.slice(0, index),
-          { ...oldElement, seconds: oldElement.seconds - 1 },
+          {
+            ...oldElement,
+            timer:
+              oldElement.seconds <= 1 && oldElement.minutes <= 0 ? clearInterval(oldElement.timer) : oldElement.timer,
+            seconds: oldElement.seconds <= 0 ? 59 : oldElement.seconds - 1,
+            minutes: oldElement.seconds <= 0 ? oldElement.minutes - 1 : oldElement.minutes,
+          },
           ...todoData.slice(index + 1),
         ],
       };
