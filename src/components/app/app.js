@@ -70,7 +70,9 @@ export default class App extends Component {
           {
             ...oldElement,
             timer:
-              oldElement.seconds <= 1 && oldElement.minutes <= 0 ? clearInterval(oldElement.timer) : oldElement.timer,
+              (oldElement.seconds <= 1 && oldElement.minutes <= 0) || oldElement.isDone
+                ? clearInterval(oldElement.timer)
+                : oldElement.timer,
             seconds: oldElement.seconds <= 0 ? 59 : oldElement.seconds - 1,
             minutes: oldElement.seconds <= 0 ? oldElement.minutes - 1 : oldElement.minutes,
           },
@@ -86,7 +88,7 @@ export default class App extends Component {
       return {
         todoData: [
           ...todoData.slice(0, index),
-          { ...oldElement, isDone: !oldElement.isDone },
+          { ...oldElement, isDone: !oldElement.isDone, timer: clearInterval(oldElement.timer) },
           ...todoData.slice(index + 1),
         ],
       };

@@ -52,11 +52,13 @@ export default class TodoItem extends Component {
       });
     }
   };
-  renderTimer = (minutes, seconds) => {
+  renderTimer = (minutes, seconds, isDone) => {
     const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
     const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
-    const iconPlayClasses = minutes === 0 && seconds === 0 ? 'icon icon-play icon_disabled' : 'icon icon-play';
-    const iconPauseClasses = minutes === 0 && seconds === 0 ? 'icon icon-pause icon_disabled' : 'icon icon-pause';
+    const iconPlayClasses =
+      (minutes === 0 && seconds === 0) || isDone ? 'icon icon-play icon_disabled' : 'icon icon-play';
+    const iconPauseClasses =
+      (minutes === 0 && seconds === 0) || isDone ? 'icon icon-pause icon_disabled' : 'icon icon-pause';
     return (
       <span className="description">
         <button className={iconPlayClasses} onClick={this.startTimer}></button>
@@ -90,7 +92,7 @@ export default class TodoItem extends Component {
           <input className="toggle" type="checkbox" defaultChecked={isDone ? true : false} onClick={doneHandler} />
           <label>
             <span className="title">{description}</span>
-            {this.renderTimer(minutes, seconds)}
+            {this.renderTimer(minutes, seconds, isDone)}
             <span className="description description_date">{`created ${formatDistanceToNow(created, {
               includeSeconds: true,
               addSuffix: true,
