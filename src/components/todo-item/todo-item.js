@@ -78,6 +78,7 @@ export default class TodoItem extends Component {
   render() {
     const { description, isDone, onDelete, doneHandler, created, minutes, seconds } = this.props;
     const { edit, description: stateDescription } = this.state;
+    const iconEditClases = isDone ? 'icon icon-edit icon_disabled' : 'icon icon-edit';
     let classNames = '';
     if (isDone) {
       classNames = 'completed';
@@ -98,7 +99,7 @@ export default class TodoItem extends Component {
               addSuffix: true,
             })}`}</span>
           </label>
-          <button className="icon icon-edit" onClick={!isDone ? this.onEditClick : () => {}}></button>
+          <button className={iconEditClases} onClick={!isDone ? this.onEditClick : () => {}}></button>
           <button className="icon icon-destroy" onClick={onDelete}></button>
         </div>
         <form onSubmit={this.submitHandler}>

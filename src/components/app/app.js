@@ -63,9 +63,9 @@ export default class App extends Component {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((i) => i.id === id);
       const oldElement = todoData[index];
-      if ((oldElement.minutes === 0) & (oldElement.seconds === 0)) {
-        return { todoData };
-      }
+      // if ((oldElement.minutes === 0) & (oldElement.seconds === 0)) {
+      //   return { todoData };
+      // }
       return {
         todoData: [
           ...todoData.slice(0, index),
@@ -75,8 +75,20 @@ export default class App extends Component {
               (oldElement.seconds <= 1 && oldElement.minutes <= 0) || oldElement.isDone
                 ? clearInterval(oldElement.timer)
                 : oldElement.timer,
-            seconds: oldElement.isDone ? oldElement.seconds : oldElement.seconds <= 0 ? 59 : oldElement.seconds - 1,
-            minutes: oldElement.seconds <= 0 ? oldElement.minutes - 1 : oldElement.minutes,
+            seconds:
+              oldElement.seconds === 0 && oldElement.minutes === 0
+                ? oldElement.seconds
+                : oldElement.isDone
+                  ? oldElement.seconds
+                  : oldElement.seconds <= 0
+                    ? 59
+                    : oldElement.seconds - 1,
+            minutes:
+              oldElement.seconds === 0 && oldElement.minutes === 0
+                ? oldElement.minutes
+                : oldElement.seconds <= 0
+                  ? oldElement.minutes - 1
+                  : oldElement.minutes,
           },
           ...todoData.slice(index + 1),
         ],
