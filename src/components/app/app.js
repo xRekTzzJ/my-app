@@ -73,7 +73,7 @@ export default class App extends Component {
               (oldElement.seconds <= 1 && oldElement.minutes <= 0) || oldElement.isDone
                 ? clearInterval(oldElement.timer)
                 : oldElement.timer,
-            seconds: oldElement.seconds <= 0 ? 59 : oldElement.seconds - 1,
+            seconds: oldElement.isDone ? oldElement.seconds : oldElement.seconds <= 0 ? 59 : oldElement.seconds - 1,
             minutes: oldElement.seconds <= 0 ? oldElement.minutes - 1 : oldElement.minutes,
           },
           ...todoData.slice(index + 1),

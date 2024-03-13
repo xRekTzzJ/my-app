@@ -36,14 +36,18 @@ export default class NewTaskForm extends Component {
         });
         break;
       case 'Min':
-        this.setState({
-          minutes: e.target.value,
-        });
+        e.target.value.length > 2
+          ? null
+          : this.setState({
+              minutes: e.target.value,
+            });
         break;
       case 'Sec':
-        this.setState({
-          seconds: e.target.value,
-        });
+        e.target.value.length > 2
+          ? null
+          : this.setState({
+              seconds: e.target.value,
+            });
         break;
     }
   };
