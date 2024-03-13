@@ -61,8 +61,8 @@ export default class TodoItem extends Component {
       (minutes === 0 && seconds === 0) || isDone ? 'icon icon-pause icon_disabled' : 'icon icon-pause';
     return (
       <span className="description">
-        <button className={iconPlayClasses} onClick={this.startTimer}></button>
-        <button className={iconPauseClasses} onClick={this.pauseTimer}></button>
+        <button className={iconPlayClasses} onClick={isDone ? null : this.startTimer}></button>
+        <button className={iconPauseClasses} onClick={isDone ? null : this.pauseTimer}></button>
         {validateMinutes}:{validateSeconds}
       </span>
     );
