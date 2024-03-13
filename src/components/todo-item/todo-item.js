@@ -49,10 +49,12 @@ export default class TodoItem extends Component {
   renderTimer = (minutes, seconds) => {
     const validateMinutes = minutes > 9 ? String(minutes) : '0' + String(minutes);
     const validateSeconds = seconds > 9 ? String(seconds) : '0' + String(seconds);
+    const iconPlayClasses = minutes === 0 && seconds === 0 ? 'icon icon-play icon_disabled' : 'icon icon-play';
+    const iconPauseClasses = minutes === 0 && seconds === 0 ? 'icon icon-pause icon_disabled' : 'icon icon-pause';
     return (
       <span className="description">
-        <button className="icon icon-play" onClick={this.startTimer}></button>
-        <button className="icon icon-pause" onClick={this.pauseTimer}></button>
+        <button className={iconPlayClasses} onClick={this.startTimer}></button>
+        <button className={iconPauseClasses} onClick={this.pauseTimer}></button>
         {validateMinutes}:{validateSeconds}
       </span>
     );

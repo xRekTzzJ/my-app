@@ -481,3 +481,11 @@ input[type='number']:focus {
   min-width: 200px;
   text-align: right;
 }
+.icon_disabled {
+  cursor: default !important;
+  opacity: 0.5;
+  transition: none;
+}
+.icon_disabled:hover {
+  color: #cc9a9a !important;
+}
