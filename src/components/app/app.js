@@ -101,7 +101,7 @@ const App = () => {
       const oldElement = data[index];
       return [
         ...data.slice(0, index),
-        { ...oldElement, isDone: !oldElement.isDone, timer: clearInterval(oldElement.timer) },
+        { ...oldElement, isDone: !oldElement.isDone, timer: clearInterval(oldElement.timer), minutes: 0, seconds: 0 },
         ...data.slice(index + 1),
       ];
     });
