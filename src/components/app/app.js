@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import Footer from '../footer';
 import Header from '../header';
 import TodoList from '../todo-list';
 
-export default class App extends Component {
+const App = () => {
+  const [todoData, setTodoData] = useState([]);
+  const [filter, setFilter] = useState('All');
+  const [maxId, setMaxId] = useState(0);
+
   //Создать todo
-  maxId = 0;
-  createTodo = (description, isDone = false, minutes, seconds) => {
+  const createTodo = (description, isDone = false, minutes, seconds) => {
+    setMaxId((maxId) => maxId + 1);
     const validate = (value) => {
       if (value.length < 1) {
         return 0;
@@ -27,133 +31,111 @@ export default class App extends Component {
       seconds: validate(seconds),
       created: new Date(),
       timer: null,
-      id: (this.maxId += 1),
+      id: maxId,
     };
   };
 
-  state = {
-    todoData: [],
-    filter: 'All',
-  };
-
   //Запустить таймер
-  startTimer = (id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((i) => i.id === id);
-      const oldElement = todoData[index];
-      return {
-        todoData: [
-          ...todoData.slice(0, index),
-          { ...oldElement, timer: oldElement.timer ? oldElement.timer : setInterval(() => this.timer(id), 1000) },
-          ...todoData.slice(index + 1),
-        ],
-      };
+  const startTimer = (id) => {
+    setTodoData((data) => {
+      const index = data.findIndex((i) => i.id === id);
+      const oldElement = data[index];
+      return [
+        ...data.slice(0, index),
+        { ...oldElement, timer: oldElement.timer ? oldElement.timer : setInterval(() => timer(id), 1000) },
+        ...data.slice(index + 1),
+      ];
     });
   };
 
   //Остановить таймер
-  pauseTimer = (id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((i) => i.id === id);
-      const oldElement = todoData[index];
-      return {
-        todoData: [
-          ...todoData.slice(0, index),
-          { ...oldElement, timer: clearInterval(oldElement.timer) },
-          ...todoData.slice(index + 1),
-        ],
-      };
+  const pauseTimer = (id) => {
+    setTodoData((data) => {
+      const index = data.findIndex((i) => i.id === id);
+      const oldElement = data[index];
+      return [
+        ...data.slice(0, index),
+        { ...oldElement, timer: clearInterval(oldElement.timer) },
+        ...data.slice(index + 1),
+      ];
     });
   };
 
   //Логика таймера
-  timer = (id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((i) => i.id === id);
-      const oldElement = todoData[index];
-      return {
-        todoData: [
-          ...todoData.slice(0, index),
-          {
-            ...oldElement,
-            timer:
-              (oldElement.seconds <= 1 && oldElement.minutes <= 0) || oldElement.isDone
-                ? clearInterval(oldElement.timer)
-                : oldElement.timer,
-            seconds:
-              oldElement.seconds === 0 && oldElement.minutes === 0
+  const timer = (id) => {
+    setTodoData((data) => {
+      const index = data.findIndex((i) => i.id === id);
+      const oldElement = data[index];
+      return [
+        ...data.slice(0, index),
+        {
+          ...oldElement,
+          timer:
+            (oldElement.seconds <= 1 && oldElement.minutes <= 0) || oldElement.isDone
+              ? clearInterval(oldElement.timer)
+              : oldElement.timer,
+          seconds:
+            oldElement.seconds === 0 && oldElement.minutes === 0
+              ? oldElement.seconds
+              : oldElement.isDone
                 ? oldElement.seconds
-                : oldElement.isDone
-                  ? oldElement.seconds
-                  : oldElement.seconds <= 0
-                    ? 59
-                    : oldElement.seconds - 1,
-            minutes:
-              oldElement.seconds === 0 && oldElement.minutes === 0
-                ? oldElement.minutes
                 : oldElement.seconds <= 0
-                  ? oldElement.minutes - 1
-                  : oldElement.minutes,
-          },
-          ...todoData.slice(index + 1),
-        ],
-      };
+                  ? 59
+                  : oldElement.seconds - 1,
+          minutes:
+            oldElement.seconds === 0 && oldElement.minutes === 0
+              ? oldElement.minutes
+              : oldElement.seconds <= 0
+                ? oldElement.minutes - 1
+                : oldElement.minutes,
+        },
+        ...data.slice(index + 1),
+      ];
     });
   };
 
   //Слушатель done
-  doneHandler = (id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((i) => i.id === id);
-      const oldElement = todoData[index];
-      return {
-        todoData: [
-          ...todoData.slice(0, index),
-          { ...oldElement, isDone: !oldElement.isDone, timer: clearInterval(oldElement.timer) },
-          ...todoData.slice(index + 1),
-        ],
-      };
+  const doneHandler = (id) => {
+    setTodoData((data) => {
+      const index = data.findIndex((i) => i.id === id);
+      const oldElement = data[index];
+      return [
+        ...data.slice(0, index),
+        { ...oldElement, isDone: !oldElement.isDone, timer: clearInterval(oldElement.timer) },
+        ...data.slice(index + 1),
+      ];
     });
   };
 
   //Удалить todo
-  deleteTodo = (id) => {
-    this.pauseTimer(id);
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((i) => i.id === id);
-      return {
-        todoData: [...todoData.slice(0, index), ...todoData.slice(index + 1)],
-      };
+  const deleteTodo = (id) => {
+    pauseTimer(id);
+    setTodoData((data) => {
+      const index = data.findIndex((i) => i.id === id);
+      return [...data.slice(0, index), ...data.slice(index + 1)];
     });
   };
 
   //Очистить выполненные todo
-  clearCompleted = () => {
-    this.setState(({ todoData }) => {
-      return {
-        todoData: todoData.filter((el) => !el.isDone),
-      };
+  const clearCompleted = () => {
+    setTodoData((data) => {
+      return data.filter((el) => !el.isDone);
     });
   };
 
-  //Количество выполненных todo
-  doneCounter = () => {
-    const { todoData } = this.state;
+  const doneCounter = () => {
     return todoData.length - todoData.filter((e) => e.isDone).length;
   };
 
   //Слушатель создания todo
-  onCreateElement = (description, minutes, seconds) => {
-    this.setState(({ todoData }) => {
-      return {
-        todoData: [...todoData.slice(0), this.createTodo(description, false, minutes, seconds)],
-      };
+  const onCreateElement = (description, minutes, seconds) => {
+    setTodoData((data) => {
+      return [...data.slice(0), createTodo(description, false, minutes, seconds)];
     });
   };
 
   //Отфильтровать todo
-  filterTodo = () => {
-    const { filter, todoData } = this.state;
+  const filterTodo = () => {
     switch (filter) {
       case 'Active':
         return todoData.filter((el) => !el.isDone);
@@ -165,22 +147,16 @@ export default class App extends Component {
   };
 
   //Слушатель клика по фильтру
-  onFilterClick = (type) => {
+  const onFilterClick = (type) => {
     switch (type) {
       case 'Completed':
-        this.setState({
-          filter: 'Completed',
-        });
+        setFilter('Completed');
         break;
       case 'Active':
-        this.setState({
-          filter: 'Active',
-        });
+        setFilter('Active');
         break;
       case 'All':
-        this.setState({
-          filter: 'All',
-        });
+        setFilter('All');
         break;
       default:
         break;
@@ -188,38 +164,35 @@ export default class App extends Component {
   };
 
   //Сабмит изменения todo
-  onEditSubmit = (description, id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((i) => i.id === id);
-      return {
-        todoData: [...todoData.slice(0, index), { ...todoData[index], description }, ...todoData.slice(index + 1)],
-      };
+  const onEditSubmit = (description, id) => {
+    setTodoData((data) => {
+      const index = data.findIndex((i) => i.id === id);
+      return [...data.slice(0, index), { ...data[index], description }, ...data.slice(index + 1)];
     });
   };
 
   //Рендер приложения
-  render() {
-    const { filter } = this.state;
-    return (
-      <section className="todoapp">
-        <Header onCreateElement={this.onCreateElement} />
-        <section className="main">
-          <TodoList
-            todoData={this.filterTodo()}
-            onDelete={this.deleteTodo}
-            doneHandler={this.doneHandler}
-            onEditSubmit={this.onEditSubmit}
-            startTimer={this.startTimer}
-            pauseTimer={this.pauseTimer}
-          />
-          <Footer
-            onFilterClick={this.onFilterClick}
-            doneCounter={this.doneCounter()}
-            onClearCompleted={this.clearCompleted}
-            filter={filter}
-          />
-        </section>
+  return (
+    <section className="todoapp">
+      <Header onCreateElement={onCreateElement} />
+      <section className="main">
+        <TodoList
+          todoData={filterTodo()}
+          onDelete={deleteTodo}
+          doneHandler={doneHandler}
+          onEditSubmit={onEditSubmit}
+          startTimer={startTimer}
+          pauseTimer={pauseTimer}
+        />
+        <Footer
+          onFilterClick={onFilterClick}
+          doneCounter={doneCounter()}
+          onClearCompleted={clearCompleted}
+          filter={filter}
+        />
       </section>
-    );
-  }
-}
+    </section>
+  );
+};
+
+export default App;
