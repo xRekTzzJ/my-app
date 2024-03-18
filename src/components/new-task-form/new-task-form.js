@@ -1,87 +1,73 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-export default class NewTaskForm extends Component {
-  static propTypes = {
-    onCreateElement: PropTypes.func,
-  };
-  static defaultProps = {
-    onCreateElement: () => {},
-  };
+import React, { useState } from 'react';
 
-  state = {
-    description: '',
-    minutes: '',
-    seconds: '',
-  };
+const NewTaskForm = (props) => {
+  const [description, setDescription] = useState('');
+  const [minutes, setMinutes] = useState('');
+  const [seconds, setSeconds] = useState('');
 
   //Слушатель сабмита формы
-  submitHandler = (e) => {
-    const { description, minutes, seconds } = this.state;
-    const { onCreateElement } = this.props;
+  const submitHandler = (e) => {
+    const { onCreateElement } = props;
     e.preventDefault();
     if (description.length !== 0) {
       onCreateElement(description, minutes, seconds);
-      this.setState({
-        description: '',
-        seconds: '',
-        minutes: '',
-      });
+      setDescription('');
+      setMinutes('');
+      setSeconds('');
     }
   };
 
   //Слушатель инпутов
-  inputHandler = (e) => {
+  const inputHandler = (e) => {
     switch (e.target.placeholder) {
       case 'Task':
-        this.setState({
-          description: e.target.value,
-        });
+        setDescription(e.target.value);
         break;
       case 'Min':
-        e.target.value.length > 2
-          ? null
-          : this.setState({
-              minutes: e.target.value,
-            });
+        e.target.value.length > 2 ? null : setMinutes(e.target.value);
         break;
       case 'Sec':
-        e.target.value.length > 2
-          ? null
-          : this.setState({
-              seconds: e.target.value,
-            });
+        e.target.value.length > 2 ? null : setSeconds(e.target.value);
         break;
     }
   };
 
   //Отрендерить форму
-  render() {
-    const { description, seconds, minutes } = this.state;
-    return (
-      <form className="new-todo-form" onSubmit={this.submitHandler}>
-        <input className="new-todo" placeholder="Task" autoFocus onChange={this.inputHandler} value={description} />
-        <input
-          className="new-todo-form__timer"
-          placeholder="Min"
-          autoFocus
-          type="number"
-          value={minutes}
-          onChange={this.inputHandler}
-          min={0}
-          max={59}
-        />
-        <input
-          className="new-todo-form__timer"
-          placeholder="Sec"
-          autoFocus
-          type="number"
-          value={seconds}
-          onChange={this.inputHandler}
-          max={59}
-          min={0}
-        />
-        <button type="submit"></button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className="new-todo-form" onSubmit={submitHandler}>
+      <input className="new-todo" placeholder="Task" autoFocus onChange={inputHandler} value={description} />
+      <input
+        className="new-todo-form__timer"
+        placeholder="Min"
+        autoFocus
+        type="number"
+        value={minutes}
+        onChange={inputHandler}
+        min={0}
+        max={59}
+      />
+      <input
+        className="new-todo-form__timer"
+        placeholder="Sec"
+        autoFocus
+        type="number"
+        value={seconds}
+        onChange={inputHandler}
+        max={59}
+        min={0}
+      />
+      <button type="submit"></button>
+    </form>
+  );
+};
+
+NewTaskForm.propTypes = {
+  onCreateElement: PropTypes.func,
+};
+
+NewTaskForm.defaultProps = {
+  onCreateElement: () => {},
+};
+
+export default NewTaskForm;
